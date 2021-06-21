@@ -1,4 +1,4 @@
-# finances-app
+# finances
 
 ## Project setup
 ```
