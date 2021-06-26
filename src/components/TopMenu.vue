@@ -1,13 +1,14 @@
 <template>
   <div>
-    <v-app-bar color="teal lighten-3" dark>
+    <v-app-bar color="teal lighten-3" dark height="64">
       <v-app-bar-nav-icon />
 
       <v-toolbar-title class="top-menu__title">Page title</v-toolbar-title>
 
       <tabs-menu
         class="top-menu__tabs"
-        :tabs="tabMenu"
+        :value="activeMenuItem"
+        :tabs="tabsMenu"
         @click:tab="$router.push({ path: $event.path })"
       />
 
@@ -24,13 +25,17 @@
       <v-menu left bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
+            <v-avatar color="secondary" size="32">DS</v-avatar>
           </v-btn>
         </template>
 
         <v-list>
-          <v-list-item v-for="n in 5" :key="n" @click="() => {}">
-            <v-list-item-title>Option {{ n }}</v-list-item-title>
+          <v-list-item
+            v-for="action in actionsMenu"
+            :key="action.id"
+            @click="action.action()"
+          >
+            <v-list-item-title> {{ action.name }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -40,19 +45,40 @@
 
 <script>
 import TabsMenu from "@/components/TabsMenu";
+import { mapActions } from "vuex";
 export default {
   name: "TopMenu",
   components: { TabsMenu },
   props: {},
-  data: () => ({
-    tabMenu: [
-      { name: "Главная", id: 1, path: "main" },
-      { name: "Кошельки", id: 2, path: "briefcases" },
+  data: (vm) => ({
+    tabsMenu: [
+      { name: "Главная", id: 0, path: "main" },
+      { name: "Кошельки", id: 1, path: "briefcases" },
+    ],
+    actionsMenu: [
+      {
+        id: 1,
+        name: "Выход",
+        icon: "",
+        action: vm.logout,
+      },
     ],
   }),
-  staticData: () => ({}),
-  computed: {},
-  methods: {},
+  computed: {
+    activeMenuItem() {
+      const { path } = this.$route;
+
+      const item = this.tabsMenu.find((item) => path.includes(item.path));
+      return item?.id;
+    },
+  },
+  methods: {
+    ...mapActions("auth", ["logOut"]),
+    async logout() {
+      await this.logOut();
+      this.$router.push({ path: "login" });
+    },
+  },
 };
 </script>
 
