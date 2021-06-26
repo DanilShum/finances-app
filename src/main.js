@@ -14,13 +14,13 @@ import "firebase/database";
 Vue.config.productionTip = false;
 
 firebase.initializeApp({
-  apiKey: "AIzaSyAitFzlDKvFWeuITs-_2gKeWAHgSlqMxJE",
-  authDomain: "my-finances-project.firebaseapp.com",
-  projectId: "my-finances-project",
-  storageBucket: "my-finances-project.appspot.com",
-  messagingSenderId: "965648250349",
-  appId: "1:965648250349:web:2d9b10b7b78d3e3880e3e4",
-  measurementId: "G-CRYMMWZ7L0",
+  apiKey: "AIzaSyDEjL0KpzlWmqW6acQrcUYRB4Q45221KV0",
+  authDomain: "personalinvestapp.firebaseapp.com",
+  projectId: "personalinvestapp",
+  storageBucket: "personalinvestapp.appspot.com",
+  messagingSenderId: "452570424773",
+  appId: "1:452570424773:web:4dd9762b4c9eb7e3a857ac",
+  measurementId: "G-HDZT69T2JC",
 });
 
 let app;

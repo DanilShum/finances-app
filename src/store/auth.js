@@ -8,7 +8,7 @@ export default {
   mutations: {},
   getters: {},
   actions: {
-    async signUp(context, { email, password, name }) {
+    async signUp({ commit }, { email, password, name }) {
       try {
         const { user } = await firebase
           .auth()
@@ -17,16 +17,16 @@ export default {
           name,
         });
       } catch (e) {
-        console.log(e);
+        commit("setError", e, { root: true });
+        throw e;
       }
     },
 
-    async logIn(context, { email, password }) {
+    async logIn({ commit }, { email, password }) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password);
       } catch (e) {
-        console.log(e);
-
+        commit("setError", e, { root: true });
         throw e;
       }
     },

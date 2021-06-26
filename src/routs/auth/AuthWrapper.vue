@@ -1,17 +1,27 @@
 <template>
   <div class="auth-wrapper">
-    <slot />
+    <slot v-bind="error" />
   </div>
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "AuthWrapper",
   components: {},
   props: {},
   data: () => ({}),
-  staticData: () => ({}),
-  computed: {},
+  computed: {
+    error() {
+      const error = this.$store.getters.error;
+      const password = error?.code.includes("password") && messages[error.code];
+      const email =
+        (error?.code.includes("email") || error?.code.includes("user")) &&
+        messages[error.code];
+      return { ...error, password, email };
+    },
+  },
   methods: {},
 };
 </script>

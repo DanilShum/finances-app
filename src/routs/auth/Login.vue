@@ -1,7 +1,7 @@
 <template>
   <auth-wrapper>
-    <div slot="default" class="login">
-      <template>
+    <template #default="error">
+      <div class="login">
         <ValidationObserver ref="observer" v-slot="{ invalid }">
           <form @submit.prevent="submit">
             <ValidationProvider
@@ -11,7 +11,7 @@
             >
               <v-text-field
                 v-model="email"
-                :error-messages="errors"
+                :error-messages="error.email || errors"
                 label="E-mail"
                 required
               />
@@ -23,7 +23,7 @@
             >
               <v-text-field
                 v-model="password"
-                :error-messages="errors"
+                :error-messages="error.password || errors"
                 label="Password"
                 :counter="24"
                 type="password"
@@ -38,8 +38,8 @@
             <v-btn to="/registration"> registration </v-btn>
           </form>
         </ValidationObserver>
-      </template>
-    </div>
+      </div>
+    </template>
   </auth-wrapper>
 </template>
 
