@@ -1,7 +1,7 @@
 <template>
   <auth-wrapper>
-    <div slot="default" class="sign-up">
-      <template>
+    <template #default="error">
+      <div class="sign-up">
         <ValidationObserver ref="observer" v-slot="{ invalid }">
           <form @submit.prevent="submit">
             <validation-provider
@@ -23,7 +23,7 @@
             >
               <v-text-field
                 v-model="email"
-                :error-messages="errors"
+                :error-messages="error.email || errors"
                 label="E-mail"
                 required
               />
@@ -66,8 +66,8 @@
             <v-btn to="/login"> login </v-btn>
           </form>
         </ValidationObserver>
-      </template>
-    </div>
+      </div>
+    </template>
   </auth-wrapper>
 </template>
 
@@ -136,9 +136,13 @@ export default {
       try {
         await this.signUp(payload);
         this.$router.push({ path: "main" });
+        this.resetError();
       } catch (e) {
         console.log(e);
       }
+    },
+    resetError() {
+      this.$store.commit("clearError");
     },
     clear() {
       this.email = "";
