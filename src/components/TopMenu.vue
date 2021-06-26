@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar color="teal lighten-3" dark>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon />
 
       <v-toolbar-title class="top-menu__title">Page title</v-toolbar-title>
 
@@ -11,7 +11,7 @@
         @click:tab="$router.push({ path: $event.path })"
       />
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>

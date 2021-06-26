@@ -1,17 +1,45 @@
 <template>
-  <div class="base-table" ref="table">
+  <div
+    class="base-table"
+    ref="table"
+    :class="{ 'base-table_width-pagination': !disabledPagination }"
+  >
+    <v-toolbar class="base-table__header" flat :height="48" :max-height="48">
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      />
+      <v-btn color="primary" dark class="ml-4" @click="$emit('add')">
+        Добавить актив
+      </v-btn>
+    </v-toolbar>
     <v-data-table
+      :loading="false"
+      loading-text="Loading... Please wait"
       :headers="headers"
-      :items="desserts"
+      :items="row"
       :page.sync="page"
+      :disable-pagination="disabledPagination"
       :items-per-page="itemsPerPage"
+      :search="search"
+      fixed-header
       hide-default-footer
-      class="elevation-1"
+      class="base-table__table elevation-1"
       @page-count="pageCount = $event"
-    />
-    <div class="text-center base-table__pagination">
-      <v-pagination v-model="page" :length="pageCount"></v-pagination>
-    </div>
+    >
+      <template #item.actions="{ item }">
+        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </template>
+      <template v-if="!disabledPagination" #footer>
+        <div class="text-center base-table__pagination">
+          <v-pagination v-model="page" :length="pageCount"></v-pagination>
+        </div>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -19,12 +47,22 @@
 export default {
   name: "BaseTable",
   components: {},
-  props: {},
+  props: {
+    disabledPagination: {
+      type: Boolean,
+      default: false,
+    },
+    row: {
+      type: Array,
+      required: true,
+    },
+  },
   data: () => ({
     page: 1,
     pageCount: 0,
     singleSelect: false,
     selected: [],
+    search: "",
     headers: [
       {
         text: "Dessert (100g serving)",
@@ -38,192 +76,58 @@ export default {
       { text: "Protein (g)", value: "protein" },
       { text: "Iron (%)", value: "iron" },
     ],
-    desserts: [
-      {
-        name: "Frozen Yogurt",
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: "1%",
-      },
-      {
-        name: "Ice cream sandwich",
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: "1%",
-      },
-      {
-        name: "Eclair",
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: "7%",
-      },
-      {
-        name: "Cupcake",
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: "8%",
-      },
-      {
-        name: "Gingerbread",
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: "16%",
-      },
-      {
-        name: "Jelly bean",
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: "0%",
-      },
-      {
-        name: "Lollipop",
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: "2%",
-      },
-      {
-        name: "Honeycomb",
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: "45%",
-      },
-      {
-        name: "Donut",
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: "22%",
-      },
-      {
-        name: "KitKat",
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: "6%",
-      },
-      {
-        name: "Frozen Yogurt2",
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: "1%",
-      },
-      {
-        name: "Ice cream sandwich2",
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: "1%",
-      },
-      {
-        name: "Eclair2",
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: "7%",
-      },
-      {
-        name: "Cupcake2",
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: "8%",
-      },
-      {
-        name: "Gingerbread2",
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: "16%",
-      },
-      {
-        name: "Jelly bean2",
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: "0%",
-      },
-      {
-        name: "Lollipop2",
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: "2%",
-      },
-      {
-        name: "Honeycomb2",
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: "45%",
-      },
-      {
-        name: "Donut2",
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: "22%",
-      },
-      {
-        name: "KitKat2",
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: "6%",
-      },
-    ],
     tableHeight: 0,
   }),
   computed: {
     itemsPerPage() {
-      return Math.floor(this.tableHeight / 48) - 2;
+      return Math.floor(this.tableHeight / 48) - 3;
     },
   },
   mounted() {
-    console.log(this.$refs);
     this.tableHeight = this.$refs.table.clientHeight;
   },
-  methods: {},
+
+  watch: {},
+  methods: {
+    editItem() {},
+
+    deleteItem() {},
+
+    deleteItemConfirm() {},
+
+    close() {},
+
+    closeDelete() {},
+
+    save() {},
+  },
 };
 </script>
 
 <style lang="scss">
 .base-table {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   border-left: 1px solid rgba(black, 0.12);
+
+  &:not(.base-table_width-pagination) .v-data-table__wrapper {
+    height: 100%;
+    border-bottom: 1px solid rgba(black, 0.12);
+  }
+}
+.base-table__table {
+  height: calc(100% - 48px);
+  overflow: auto;
+}
+.base-table_width-pagination {
+  .v-data-table__wrapper {
+    margin-bottom: auto;
+  }
+  .v-data-table {
+    display: flex;
+    flex-direction: column;
+  }
 }
 .base-table__pagination {
-  margin-bottom: 5px;
+  padding: 10px 0;
 }
 </style>
