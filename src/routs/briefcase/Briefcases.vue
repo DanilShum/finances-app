@@ -17,9 +17,9 @@
       <v-btn icon small class="mr-2" @click="showDropparams = true">
         <v-icon>mdi-filter-menu-outline</v-icon>
       </v-btn>
-      <v-btn icon small class="mr-2" @click="showDropparams = true">
-        <v-icon>mdi-finance</v-icon>
-      </v-btn>
+      <!--      <v-btn icon small class="mr-2" @click="showDropparams = true">-->
+      <!--        <v-icon>mdi-finance</v-icon>-->
+      <!--      </v-btn>-->
       <v-btn icon small class="mr-0" @click="showDropparams = true">
         <v-icon>mdi-cog-outline</v-icon>
       </v-btn>
@@ -46,11 +46,16 @@
       <base-table
         class="briefcases__table"
         disabled-pagination
-        :row="tableRow"
-        @add="addActive"
+        :row="tableRow || []"
+        :headers="tableHeaders"
+        @add="showPopupAsset = true"
       />
     </div>
-    <popup :overlay-transparent="false" v-model="showDropparams">
+    <popup
+      v-if="showDropparams"
+      :overlay-transparent="false"
+      @close="showDropparams = false"
+    >
       <template #default>
         <v-row align="center" justify="space-around">
           <v-btn depressed> Normal </v-btn>
@@ -83,6 +88,11 @@
         </v-container>
       </template>
     </popup>
+    <popup-asset
+      v-if="showPopupAsset"
+      @close="showPopupAsset = false"
+      @create="addAsset"
+    />
   </div>
 </template>
 
@@ -91,13 +101,14 @@ import Briefcase from "@/routs/briefcase/Briefcase";
 import BaseTable from "@/components/BaseTable";
 import TabsMenu from "@/components/TabsMenu";
 import Popup from "@/components/Popup";
+import PopupAsset from "@/routs/briefcase/popupAsset";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "Briefcases",
-  components: { Popup, TabsMenu, BaseTable, Briefcase },
+  components: { PopupAsset, Popup, TabsMenu, BaseTable, Briefcase },
   props: {},
   data: () => ({
     selected: 0,
-    items: ["Foo", "Bar", "Fizz", "Buzz"],
     briefcasesItems: [
       {
         id: 1,
@@ -180,173 +191,35 @@ export default {
         countPosition: 324,
       },
     ],
+    items: ["Foo", "Bar", "Fizz", "Buzz"],
     showDropparams: false,
-    tableRow: [
+    showPopupAsset: false,
+    tableHeaders: [
       {
-        name: "Frozen Yogurt",
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: "1%",
+        text: "Название",
+        align: "start",
+        sortable: false,
+        value: "name",
       },
-      {
-        name: "Ice cream sandwich",
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: "1%",
-      },
-      {
-        name: "Eclair",
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: "7%",
-      },
-      {
-        name: "Cupcake",
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: "8%",
-      },
-      {
-        name: "Gingerbread",
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: "16%",
-      },
-      {
-        name: "Jelly bean",
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: "0%",
-      },
-      {
-        name: "Lollipop",
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: "2%",
-      },
-      {
-        name: "Honeycomb",
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: "45%",
-      },
-      {
-        name: "Donut",
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: "22%",
-      },
-      {
-        name: "KitKat",
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: "6%",
-      },
-      {
-        name: "Frozen Yogurt2",
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: "1%",
-      },
-      {
-        name: "Ice cream sandwich2",
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: "1%",
-      },
-      {
-        name: "Eclair2",
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: "7%",
-      },
-      {
-        name: "Cupcake2",
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: "8%",
-      },
-      {
-        name: "Gingerbread2",
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: "16%",
-      },
-      {
-        name: "Jelly bean2",
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: "0%",
-      },
-      {
-        name: "Lollipop2",
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: "2%",
-      },
-      {
-        name: "Honeycomb2",
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: "45%",
-      },
-      {
-        name: "Donut2",
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: "22%",
-      },
-      {
-        name: "KitKat2",
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: "6%",
-      },
+      { text: "Кол-во", value: "count" },
+      { text: "Ср.цена", value: "middlePrice" },
+      { text: "Тек.цена", value: "currentPrice" },
+      { text: "Тек.стоимость", value: "cost" },
+      { text: "Прибыль, %", value: "profit" },
+      { text: "Доходность", value: "profitability" },
+      { text: "Доля", value: "percent" },
     ],
   }),
-  computed: {},
+  computed: {
+    ...mapState({
+      tableRow: (state) => state.assets.list,
+    }),
+  },
   methods: {
-    addActive() {},
+    ...mapActions("assets", ["createAsset"]),
+    addAsset(asset) {
+      this.createAsset(asset);
+    },
   },
 };
 </script>

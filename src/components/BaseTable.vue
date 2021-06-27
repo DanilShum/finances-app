@@ -56,6 +56,10 @@ export default {
       type: Array,
       required: true,
     },
+    headers: {
+      type: Array,
+      required: true,
+    },
   },
   data: () => ({
     page: 1,
@@ -63,19 +67,6 @@ export default {
     singleSelect: false,
     selected: [],
     search: "",
-    headers: [
-      {
-        text: "Dessert (100g serving)",
-        align: "start",
-        sortable: false,
-        value: "name",
-      },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
-      { text: "Iron (%)", value: "iron" },
-    ],
     tableHeight: 0,
   }),
   computed: {

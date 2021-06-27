@@ -3,9 +3,15 @@ import firebase from "firebase/app";
 export default {
   namespaced: true,
   state: {
-    currentUser: {},
+    currentUser: {
+      uid: undefined,
+    },
   },
-  mutations: {},
+  mutations: {
+    setUid(state, id) {
+      state.currentUser.uid = id;
+    },
+  },
   getters: {},
   actions: {
     async signUp({ commit }, { email, password, name }) {
@@ -13,6 +19,7 @@ export default {
         const { user } = await firebase
           .auth()
           .createUserWithEmailAndPassword(email, password);
+        commit("setUid", user.uid);
         await firebase.database().ref(`/users/${user.uid}/info`).set({
           name,
         });
@@ -24,7 +31,10 @@ export default {
 
     async logIn({ commit }, { email, password }) {
       try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
+        const { user } = await firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password);
+        commit("setUid", user.uid);
       } catch (e) {
         commit("setError", e, { root: true });
         throw e;
@@ -38,10 +48,10 @@ export default {
       }
     },
 
-    // async getUser({ state }) {
-    //   const res = await firebase.auth().currentUser;
-    //   state.currentUser = res;
-    //   return res;
-    // },
+    async getUser({ commit }) {
+      const res = await firebase.auth().currentUser;
+      commit("setUid", res.uid);
+      return res;
+    },
   },
 };

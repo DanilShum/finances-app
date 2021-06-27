@@ -2,16 +2,24 @@
   <div
     class="popup popup_overlay"
     :class="{ 'popup_bg-overlay': overlayTransparent }"
-    v-show="value"
-    @click="$emit('input', !value)"
+    @click="$emit('close')"
   >
     <v-card
       @click.native.stop
       elevation="2"
-      class="popup__content"
+      class="popup__wrapper"
       :class="{ popup_opened: value }"
     >
-      <slot />
+      <div v-if="$slots.header || title" class="popup__header">
+        <h3 class="popup__title">{{ title }}</h3>
+        <slot name="header" />
+      </div>
+      <div class="popup__content">
+        <slot name="content" />
+      </div>
+      <div v-if="$slots.footer" class="popup__footer">
+        <slot name="footer" />
+      </div>
     </v-card>
   </div>
 </template>
@@ -28,6 +36,10 @@ export default {
     overlayTransparent: {
       type: Boolean,
       default: true,
+    },
+    title: {
+      type: String,
+      default: "",
     },
   },
   data: () => ({}),
@@ -49,7 +61,7 @@ export default {
 .popup_bg-overlay {
   background-color: rgba(black, 0.4);
 }
-.popup__content {
+.popup__wrapper {
   margin: 100px auto;
   max-width: 1000px !important;
 }
