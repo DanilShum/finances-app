@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import firebase from "firebase/app";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -10,6 +11,10 @@ const routes = [
     meta: { auth: true },
     component: () =>
       import(/* webpackChunkName: "main" */ "../routs/MainDesktop"),
+    async beforeEnter(to, from, next) {
+      await store.dispatch("auth/getUser");
+      return next();
+    },
     children: [
       {
         path: "/Main",
@@ -24,6 +29,10 @@ const routes = [
           import(
             /* webpackChunkName: "briefcase" */ "../routs/briefcase/Briefcases"
           ),
+        beforeEnter(to, from, next) {
+          store.dispatch("assets/fetchAssets");
+          return next();
+        },
       },
     ],
   },
