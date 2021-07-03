@@ -56,7 +56,7 @@ setInteractionMode("eager");
 
 extend("required", {
   ...required,
-  message: "{_field_} can not be empty",
+  message: "{_field_} обязательно для заполнения",
 });
 
 extend("minmax", {

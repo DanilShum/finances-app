@@ -9,7 +9,7 @@
         class="top-menu__tabs"
         :value="activeMenuItem"
         :tabs="tabsMenu"
-        @click:tab="$router.push({ path: $event.path })"
+        @click:tab="$router.push({ name: $event.path })"
       />
 
       <v-spacer />
@@ -45,7 +45,7 @@
 
 <script>
 import TabsMenu from "@/components/TabsMenu";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "TopMenu",
   components: { TabsMenu },
@@ -65,6 +65,9 @@ export default {
     ],
   }),
   computed: {
+    ...mapState({
+      user: (state) => state.auth.currentUser,
+    }),
     activeMenuItem() {
       const { path } = this.$route;
 

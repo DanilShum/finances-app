@@ -12,12 +12,14 @@
         single-line
         hide-details
       />
-      <v-btn color="primary" dark class="ml-4" @click="$emit('add')">
-        Добавить актив
-      </v-btn>
+      <slot v-if="showActions" name="header-actions">
+        <v-btn color="primary" dark class="ml-4" @click="$emit('add')">
+          Добавить актив
+        </v-btn>
+      </slot>
     </v-toolbar>
     <v-data-table
-      :loading="false"
+      :loading="loading"
       loading-text="Loading... Please wait"
       :headers="headers"
       :items="row"
@@ -56,6 +58,18 @@ export default {
       type: Array,
       required: true,
     },
+    headers: {
+      type: Array,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    showActions: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     page: 1,
@@ -63,19 +77,6 @@ export default {
     singleSelect: false,
     selected: [],
     search: "",
-    headers: [
-      {
-        text: "Dessert (100g serving)",
-        align: "start",
-        sortable: false,
-        value: "name",
-      },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
-      { text: "Iron (%)", value: "iron" },
-    ],
     tableHeight: 0,
   }),
   computed: {
