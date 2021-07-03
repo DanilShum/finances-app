@@ -4,13 +4,13 @@
       :row="tableRow"
       :headers="tableHeaders"
       show-actions
-      @add="showPopupAsset = true"
+      @add="showPopupDeals = true"
       :loading="loading"
     />
-    <popup-asset
-      v-if="showPopupAsset"
-      @close="showPopupAsset = false"
-      @create="addAsset"
+    <popup-deal
+      v-if="showPopupDeals"
+      @close="showPopupDeals = false"
+      @create="addDeal"
     />
   </div>
 </template>
@@ -18,39 +18,37 @@
 <script>
 import BaseTable from "@/components/BaseTable";
 import { mapActions, mapState } from "vuex";
-import PopupAsset from "@/routs/briefcase/popupAsset";
+import PopupDeal from "@/routs/briefcase/PopupDeal";
 export default {
   name: "BriefcasesDeals",
-  components: { PopupAsset, BaseTable },
+  components: { PopupDeal, BaseTable },
   props: {},
   data: () => ({
-    showPopupAsset: false,
+    showPopupDeals: false,
     tableHeaders: [
       {
         text: "Название",
         align: "start",
         value: "name",
       },
+      { text: "Тикер", value: "ticker" },
+      { text: "Операция", value: "operation" },
+      { text: "дата", value: "date" },
       { text: "Кол-во", value: "count" },
-      { text: "Ср.цена", value: "middlePrice" },
-      { text: "Тек.цена", value: "currentPrice" },
-      { text: "Тек.стоимость", value: "cost" },
-      { text: "Прибыль, %", value: "profit" },
-      { text: "Доходность", value: "profitability" },
-      { text: "Доля", value: "percent" },
+      { text: "Цена", value: "price" },
+      { text: "Сумма", value: "sum" },
     ],
   }),
-  staticData: () => ({}),
   computed: {
     ...mapState({
-      tableRow: (state) => state.assets.list,
-      loading: (state) => state.assets.loading,
+      tableRow: (state) => state.deals.list,
+      loading: (state) => state.deals.loading,
     }),
   },
   methods: {
-    ...mapActions("assets", ["createAsset"]),
-    addAsset(asset) {
-      this.createAsset(asset);
+    ...mapActions("deals", ["create"]),
+    addDeal(asset) {
+      this.create(asset);
     },
   },
 };

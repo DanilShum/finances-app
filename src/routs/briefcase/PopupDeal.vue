@@ -1,11 +1,11 @@
 <template>
-  <popup class="popup-asset" @close="close" title="Добавление нового актива">
+  <popup class="popup-deal" @close="close" title="Добавление нового актива">
     <template #content>
       <form @submit.prevent="submit" id="popup-form">
         <ValidationObserver ref="observer">
           <v-container fluid>
             <v-row align="center">
-              <v-col class="d-flex" cols="12" sm="6">
+              <v-col class="d-flex" cols="12" sm="2">
                 <ValidationProvider
                   v-slot="{ errors }"
                   rules="required"
@@ -15,7 +15,35 @@
                     :items="assets"
                     label="Название"
                     :error-messages="errors"
-                    v-model="assetValue.name"
+                    v-model="dealsValue.name"
+                  />
+                </ValidationProvider>
+              </v-col>
+              <v-col class="d-flex" cols="12" sm="2">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  rules="required"
+                  name="Тикер"
+                >
+                  <v-select
+                    :items="tickers"
+                    label="Тикер"
+                    :error-messages="errors"
+                    v-model="dealsValue.ticker"
+                  />
+                </ValidationProvider>
+              </v-col>
+              <v-col class="d-flex" cols="12" sm="2">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  rules="required"
+                  name="Операция"
+                >
+                  <v-select
+                    :items="operations"
+                    label="Операция"
+                    :error-messages="errors"
+                    v-model="dealsValue.operation"
                   />
                 </ValidationProvider>
               </v-col>
@@ -26,17 +54,17 @@
         <ValidationObserver ref="observer">
           <v-container fluid>
             <v-row align="center">
-              <v-col v-for="asset in items" :key="asset.field" cols="4" sm="6">
+              <v-col v-for="item in items" :key="item.field" cols="4" sm="6">
                 <ValidationProvider
                   v-slot="{ errors }"
                   rules="required"
-                  :name="asset.name"
+                  :name="item.name"
                 >
                   <v-text-field
-                    :label="asset.name"
-                    :type="asset.type"
+                    :label="item.name"
+                    :type="item.type"
                     :error-messages="errors"
-                    v-model="assetValue[asset.field]"
+                    v-model="dealsValue[item.field]"
                   />
                 </ValidationProvider>
               </v-col>
@@ -69,18 +97,17 @@ extend("required", {
 });
 
 export default {
-  name: "popupAsset",
+  name: "PopupDeal",
   components: { Popup, ValidationProvider, ValidationObserver },
   props: {},
   data: () => ({
     items: [
+      { field: "price", name: "Цена", type: "number" },
       { field: "count", name: "Кол-во", type: "number" },
-      { field: "middlePrice", name: "Ср.цена", type: "number" },
-      { field: "cost", name: "Тек.стоимость", type: "number" },
-      { field: "profit", name: "Прибыль, %", type: "number" },
-      { field: "profitability", name: "Доходность", type: "number" },
-      { field: "percent", name: "Доля", type: "number" },
+      { field: "date", name: "Дата", type: "date" },
+      { field: "sum", name: "Сумма", type: "number" },
     ],
+
     assets: [
       "Sberbank",
       "Mvideo",
@@ -91,21 +118,27 @@ export default {
       "Aero flot",
       "Nor Nikel",
     ],
-    assetValue: {
+    tickers: ["SBER", "MVID", "MGNT", "ALRS", "DTMR", "NNIK"],
+    operations: ["Покупка", "Продажа", "Дивиденды", "Налоги"],
+
+    dealsValue: {
       name: "",
+      price: 0,
       count: 0,
-      middlePrice: 0,
-      currentPrice: 0,
-      cost: 0,
-      profit: 0,
-      profitability: 0,
-      percent: 0,
+      ticker: "",
+      operation: "",
+      date: new Date().toISOString().substring(0, 10),
+      sum: 0,
     },
     isValid: false,
   }),
-  computed: {},
+  computed: {
+    sum() {
+      return this.dealsValue.price * this.dealsValue.count;
+    },
+  },
   watch: {
-    assetValue: {
+    dealsValue: {
       immediate: true,
       deep: true,
       handler() {
@@ -116,7 +149,7 @@ export default {
   methods: {
     submit() {
       if (this.isValid) {
-        this.$emit("create", this.assetValue);
+        this.$emit("create", this.dealsValue);
         this.close();
       }
     },
@@ -128,6 +161,6 @@ export default {
 </script>
 
 <style lang="scss">
-.popup-asset {
+.popup-deal {
 }
 </style>

@@ -2,10 +2,11 @@
   <v-tabs
     class="tabs-menu"
     :background-color="backgroundColor"
+    :value="tabId"
     v-bind="$attrs"
     :height="height"
   >
-    <v-tab v-for="tab in tabs" :key="tab.id" @click="$emit('click:tab', tab)">
+    <v-tab v-for="tab in tabs" :key="tab.id" @click="onTab(tab)">
       {{ tab.name }}
     </v-tab>
   </v-tabs>
@@ -16,6 +17,10 @@ export default {
   name: "TabsMenu",
   components: {},
   props: {
+    tabId: {
+      type: Number,
+      default: 0,
+    },
     tabs: {
       type: Array,
       required: true,
@@ -31,7 +36,12 @@ export default {
   },
   data: () => ({}),
   computed: {},
-  methods: {},
+  methods: {
+    onTab(tab) {
+      if (tab.id === this.tabId) return;
+      this.$emit("click:tab", tab);
+    },
+  },
 };
 </script>
 

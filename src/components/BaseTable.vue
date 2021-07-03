@@ -108,6 +108,7 @@ export default {
 <style lang="scss">
 .base-table {
   width: 100%;
+  height: 100%;
   border-left: 1px solid rgba(black, 0.12);
 
   &:not(.base-table_width-pagination) .v-data-table__wrapper {
