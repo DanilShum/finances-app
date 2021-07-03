@@ -10,6 +10,12 @@
       class="popup__wrapper"
       :class="{ popup_opened: value }"
     >
+      <div class="popup__actions">
+        <v-btn icon @click="$emit('close')">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <slot name="action" />
+      </div>
       <div v-if="$slots.header || title" class="popup__header">
         <h3 class="popup__title">{{ title }}</h3>
         <slot name="header" />
@@ -64,5 +70,14 @@ export default {
 .popup__wrapper {
   margin: 100px auto;
   max-width: 1000px !important;
+  padding: 20px;
+}
+.popup__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+.popup__actions {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

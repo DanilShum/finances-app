@@ -5,6 +5,27 @@
         <ValidationObserver ref="observer">
           <v-container fluid>
             <v-row align="center">
+              <v-col class="d-flex" cols="12" sm="6">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  rules="required"
+                  name="Название"
+                >
+                  <v-select
+                    :items="assets"
+                    label="Название"
+                    :error-messages="errors"
+                    v-model="assetValue.name"
+                  />
+                </ValidationProvider>
+              </v-col>
+            </v-row>
+          </v-container>
+        </ValidationObserver>
+
+        <ValidationObserver ref="observer">
+          <v-container fluid>
+            <v-row align="center">
               <v-col v-for="asset in items" :key="asset.field" cols="4" sm="6">
                 <ValidationProvider
                   v-slot="{ errors }"
@@ -25,7 +46,14 @@
       </form>
     </template>
     <template #footer>
-      <v-btn form="popup-form" class="mr-4" type="submit"> Создать </v-btn>
+      <v-btn
+        form="popup-form"
+        color="primary"
+        type="submit"
+        :disabled="!isValid"
+      >
+        Создать
+      </v-btn>
     </template>
   </popup>
 </template>
@@ -46,14 +74,22 @@ export default {
   props: {},
   data: () => ({
     items: [
-      { field: "name", name: "Название", type: "text" },
       { field: "count", name: "Кол-во", type: "number" },
       { field: "middlePrice", name: "Ср.цена", type: "number" },
-      { field: "currentPrice", name: "Тек.цена", type: "number" },
       { field: "cost", name: "Тек.стоимость", type: "number" },
       { field: "profit", name: "Прибыль, %", type: "number" },
       { field: "profitability", name: "Доходность", type: "number" },
       { field: "percent", name: "Доля", type: "number" },
+    ],
+    assets: [
+      "Sberbank",
+      "Mvideo",
+      "Magnit",
+      "Alrosa",
+      "MTS",
+      "Detsky Mir",
+      "Aero flot",
+      "Nor Nikel",
     ],
     assetValue: {
       name: "",
@@ -65,12 +101,24 @@ export default {
       profitability: 0,
       percent: 0,
     },
+    isValid: false,
   }),
   computed: {},
+  watch: {
+    assetValue: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.$refs.observer?.validate().then((res) => (this.isValid = res));
+      },
+    },
+  },
   methods: {
     submit() {
-      this.$emit("create", this.assetValue);
-      this.close();
+      if (this.isValid) {
+        this.$emit("create", this.assetValue);
+        this.close();
+      }
     },
     close() {
       this.$emit("close");

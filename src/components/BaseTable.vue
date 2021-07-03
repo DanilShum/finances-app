@@ -12,12 +12,14 @@
         single-line
         hide-details
       />
-      <v-btn color="primary" dark class="ml-4" @click="$emit('add')">
-        Добавить актив
-      </v-btn>
+      <slot v-if="showActions" name="header-actions">
+        <v-btn color="primary" dark class="ml-4" @click="$emit('add')">
+          Добавить актив
+        </v-btn>
+      </slot>
     </v-toolbar>
     <v-data-table
-      :loading="false"
+      :loading="loading"
       loading-text="Loading... Please wait"
       :headers="headers"
       :items="row"
@@ -59,6 +61,14 @@ export default {
     headers: {
       type: Array,
       required: true,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    showActions: {
+      type: Boolean,
+      default: false,
     },
   },
   data: () => ({

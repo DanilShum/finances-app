@@ -17,14 +17,14 @@ const routes = [
     },
     children: [
       {
-        path: "/Main",
-        name: "Main",
+        path: "/main",
+        name: "main",
         component: () =>
           import(/* webpackChunkName: "home" */ "../routs/home/Home"),
       },
       {
         path: "/briefcases",
-        name: "Briefcases",
+        name: "briefcases",
         component: () =>
           import(
             /* webpackChunkName: "briefcase" */ "../routs/briefcase/Briefcases"
@@ -33,18 +33,36 @@ const routes = [
           store.dispatch("assets/fetchAssets");
           return next();
         },
+        children: [
+          {
+            path: "deals",
+            name: "deals",
+            component: () =>
+              import(
+                /* webpackChunkName: "deals" */ "../routs/briefcase/BriefcasesDeals"
+              ),
+          },
+          {
+            path: "table",
+            name: "table",
+            component: () =>
+              import(
+                /* webpackChunkName: "assets" */ "../routs/briefcase/BriefcasesAssets"
+              ),
+          },
+        ],
       },
     ],
   },
   {
     path: "/login",
-    name: "Login",
+    name: "login",
     component: () =>
       import(/* webpackChunkName: "login" */ "../routs/auth/Login"),
   },
   {
     path: "/registration",
-    name: "Registration",
+    name: "registration",
     component: () =>
       import(/* webpackChunkName: "registration" */ "../routs/auth/SignUp"),
   },

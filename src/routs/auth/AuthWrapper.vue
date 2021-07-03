@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import messages from "@/utils/messages";
+import messages from "@/helpers/messages";
 
 export default {
   name: "AuthWrapper",
