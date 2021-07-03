@@ -8,11 +8,8 @@
     >
       <tabs-menu
         :height="36"
-        :tabs="[
-          { name: 'таблица', id: 2, path: 'table', view: 'assets' },
-          { name: 'сделки', id: 1, path: 'deals', view: 'deals' },
-          // { name: 'графики', id: 3, path: 'analytics', view: 'analytics' },
-        ]"
+        :tab-id="activeMenuId"
+        :tabs="tabsMenu"
         @click:tab="$router.push({ name: $event.path })"
       />
 
@@ -152,6 +149,11 @@ export default {
         countPosition: 324,
       },
     ],
+    tabsMenu: [
+      { name: "таблица", id: 2, path: "table", view: "assets" },
+      { name: "сделки", id: 1, path: "deals", view: "deals" },
+      // { name: 'графики', id: 3, path: 'analytics', view: 'analytics' },
+    ],
     items: ["Foo", "Bar", "Fizz", "Buzz"],
     showDropparams: false,
   }),
@@ -160,6 +162,12 @@ export default {
       tableRow: (state) => state.assets.list,
       loading: (state) => state.assets.loading,
     }),
+    activeMenuId() {
+      const { path } = this.$route;
+
+      const item = this.tabsMenu.find((item) => path.includes(item.path));
+      return item?.id;
+    },
   },
 };
 </script>

@@ -7,7 +7,7 @@
 
       <tabs-menu
         class="top-menu__tabs"
-        :value="activeMenuItem"
+        :tab-id="activeMenuId"
         :tabs="tabsMenu"
         @click:tab="$router.push({ name: $event.path })"
       />
@@ -68,7 +68,7 @@ export default {
     ...mapState({
       user: (state) => state.auth.currentUser,
     }),
-    activeMenuItem() {
+    activeMenuId() {
       const { path } = this.$route;
 
       const item = this.tabsMenu.find((item) => path.includes(item.path));

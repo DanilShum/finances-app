@@ -29,10 +29,6 @@ const routes = [
           import(
             /* webpackChunkName: "briefcase" */ "../routs/briefcase/Briefcases"
           ),
-        beforeEnter(to, from, next) {
-          store.dispatch("assets/fetchAssets");
-          return next();
-        },
         children: [
           {
             path: "deals",
@@ -41,6 +37,10 @@ const routes = [
               import(
                 /* webpackChunkName: "deals" */ "../routs/briefcase/BriefcasesDeals"
               ),
+            beforeEnter(to, from, next) {
+              store.dispatch("deals/fetch");
+              return next();
+            },
           },
           {
             path: "table",
@@ -49,6 +49,10 @@ const routes = [
               import(
                 /* webpackChunkName: "assets" */ "../routs/briefcase/BriefcasesAssets"
               ),
+            beforeEnter(to, from, next) {
+              store.dispatch("assets/fetch");
+              return next();
+            },
           },
         ],
       },
