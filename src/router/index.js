@@ -10,7 +10,7 @@ const routes = [
     path: "/",
     meta: { auth: true },
     component: () =>
-      import(/* webpackChunkName: "main" */ "../routs/MainDesktop"),
+      import(/* webpackChunkName: "main" */ "../routes/MainDesktop"),
     async beforeEnter(to, from, next) {
       await store.dispatch("auth/getUser");
       return next();
@@ -20,14 +20,14 @@ const routes = [
         path: "/main",
         name: "main",
         component: () =>
-          import(/* webpackChunkName: "home" */ "../routs/home/Home"),
+          import(/* webpackChunkName: "home" */ "../routes/home/Home"),
       },
       {
         path: "/briefcases",
         name: "briefcases",
         component: () =>
           import(
-            /* webpackChunkName: "briefcase" */ "../routs/briefcase/Briefcases"
+            /* webpackChunkName: "briefcase" */ "../routes/briefcase/Briefcases"
           ),
         children: [
           {
@@ -35,7 +35,7 @@ const routes = [
             name: "deals",
             component: () =>
               import(
-                /* webpackChunkName: "deals" */ "../routs/briefcase/BriefcasesDeals"
+                /* webpackChunkName: "deals" */ "../routes/briefcase/BriefcasesDeals"
               ),
             beforeEnter(to, from, next) {
               store.dispatch("deals/fetch");
@@ -47,7 +47,7 @@ const routes = [
             name: "table",
             component: () =>
               import(
-                /* webpackChunkName: "assets" */ "../routs/briefcase/BriefcasesAssets"
+                /* webpackChunkName: "assets" */ "../routes/briefcase/BriefcasesAssets"
               ),
             beforeEnter(to, from, next) {
               store.dispatch("assets/fetch");
@@ -62,13 +62,13 @@ const routes = [
     path: "/login",
     name: "login",
     component: () =>
-      import(/* webpackChunkName: "login" */ "../routs/auth/Login"),
+      import(/* webpackChunkName: "login" */ "../routes/auth/Login"),
   },
   {
     path: "/registration",
     name: "registration",
     component: () =>
-      import(/* webpackChunkName: "registration" */ "../routs/auth/SignUp"),
+      import(/* webpackChunkName: "registration" */ "../routes/auth/SignUp"),
   },
 ];
 

@@ -73,7 +73,7 @@ extend("email", {
   message: "Email must be valid",
 });
 
-import AuthWrapper from "@/routs/auth/AuthWrapper";
+import AuthWrapper from "@/routes/auth/AuthWrapper";
 import { mapActions } from "vuex";
 export default {
   name: "Login",

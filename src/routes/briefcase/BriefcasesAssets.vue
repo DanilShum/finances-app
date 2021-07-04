@@ -30,8 +30,8 @@ export default {
       { text: "Тек.цена", value: "currentPrice" },
       { text: "Тек.стоимость", value: "cost" },
       { text: "Прибыль, %", value: "profit" },
-      { text: "Доходность", value: "profitability" },
-      { text: "Доля", value: "percent" },
+      { text: "Доходность, %", value: "profitability" },
+      { text: "Доля, %", value: "percent" },
     ],
   }),
   computed: {

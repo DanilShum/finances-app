@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import Briefcase from "@/routs/briefcase/Briefcase";
+import Briefcase from "@/routes/briefcase/Briefcase";
 import TabsMenu from "@/components/TabsMenu";
 import Popup from "@/components/Popup";
 import { mapState } from "vuex";
@@ -150,7 +150,7 @@ export default {
       },
     ],
     tabsMenu: [
-      { name: "таблица", id: 2, path: "table", view: "assets" },
+      { name: "активы", id: 2, path: "table", view: "assets" },
       { name: "сделки", id: 1, path: "deals", view: "deals" },
       // { name: 'графики', id: 3, path: 'analytics', view: 'analytics' },
     ],

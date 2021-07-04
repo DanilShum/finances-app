@@ -109,7 +109,7 @@ extend("password", {
   message: "Password confirmation does not match",
 });
 
-import AuthWrapper from "@/routs/auth/AuthWrapper";
+import AuthWrapper from "@/routes/auth/AuthWrapper";
 import { mapActions } from "vuex";
 export default {
   name: "SignUp",

@@ -49,9 +49,7 @@
               </v-col>
             </v-row>
           </v-container>
-        </ValidationObserver>
 
-        <ValidationObserver ref="observer">
           <v-container fluid>
             <v-row align="center">
               <v-col v-for="item in items" :key="item.field" cols="4" sm="6">
@@ -118,7 +116,7 @@ export default {
       "Aero flot",
       "Nor Nikel",
     ],
-    tickers: ["SBER", "MVID", "MGNT", "ALRS", "DTMR", "NNIK"],
+    tickers: ["SBER", "MVID", "MGNT", "ALRS", "DTMR", "NNIK", "MTS"],
     operations: ["Покупка", "Продажа", "Дивиденды", "Налоги"],
 
     dealsValue: {

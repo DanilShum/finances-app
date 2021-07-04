@@ -77,9 +77,9 @@ export default {
   },
   methods: {
     ...mapActions("auth", ["logOut"]),
-    async logout() {
-      await this.logOut();
-      this.$router.push({ path: "login" });
+    logout() {
+      this.logOut();
+      this.$router.push({ name: "login" });
     },
   },
 };

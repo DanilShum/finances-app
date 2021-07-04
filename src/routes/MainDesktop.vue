@@ -1,7 +1,7 @@
 <template>
   <div class="main-desktop">
     <top-menu />
-    <keep-alive :include="['Main', 'Briefcases']">
+    <keep-alive>
       <router-view />
     </keep-alive>
   </div>
@@ -14,7 +14,6 @@ export default {
   components: { TopMenu },
   props: {},
   data: () => ({}),
-  staticData: () => ({}),
   computed: {},
   methods: {},
 };
