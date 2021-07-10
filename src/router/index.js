@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
+    path: "/app",
     meta: { auth: true },
     component: () =>
       import(/* webpackChunkName: "main" */ "../routes/MainDesktop"),
@@ -17,25 +17,36 @@ const routes = [
     },
     children: [
       {
-        path: "/main",
+        path: "main",
         name: "main",
         component: () =>
           import(/* webpackChunkName: "home" */ "../routes/home/Home"),
       },
       {
-        path: "/briefcases",
+        path: "briefcases",
         name: "briefcases",
         component: () =>
           import(
             /* webpackChunkName: "briefcase" */ "../routes/briefcase/Briefcases"
           ),
+        async beforeEnter(to, from, next) {
+          await store.dispatch("auth/getUser");
+          await store.dispatch("briefcases/fetch");
+          return next();
+        },
+      },
+      {
+        path: "assets",
+        name: "assets",
+        component: () =>
+          import(/* webpackChunkName: "assets" */ "../routes/assets/Assets"),
         children: [
           {
             path: "deals",
             name: "deals",
             component: () =>
               import(
-                /* webpackChunkName: "deals" */ "../routes/briefcase/BriefcasesDeals"
+                /* webpackChunkName: "deals" */ "../routes/assets/DealsTable"
               ),
             beforeEnter(to, from, next) {
               store.dispatch("deals/fetch");
@@ -47,7 +58,7 @@ const routes = [
             name: "table",
             component: () =>
               import(
-                /* webpackChunkName: "assets" */ "../routes/briefcase/BriefcasesAssets"
+                /* webpackChunkName: "assets" */ "../routes/assets/AssetsTable"
               ),
             beforeEnter(to, from, next) {
               store.dispatch("assets/fetch");

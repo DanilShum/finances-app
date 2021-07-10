@@ -20,7 +20,7 @@
 <script>
 import BaseTable from "@/components/BaseTable";
 import { mapActions, mapState } from "vuex";
-import PopupDeal from "@/routes/briefcase/PopupDeal";
+import PopupDeal from "@/routes/assets/PopupDeal";
 import { db } from "@/main";
 import firebase from "firebase/app";
 
@@ -54,8 +54,6 @@ export default {
   }),
   computed: {
     ...mapState({
-      // deals: (state) => state.deals.list,
-      // assets: (state) => state.assets.list,
       loading: (state) => state.deals.loading,
     }),
   },
@@ -71,6 +69,8 @@ export default {
       const assetIndex = this.assets.findIndex(
         (asset) => asset.ticker === deal.ticker
       );
+
+      console.log(assetIndex);
 
       // TODO: move to store
       const payload = {
@@ -89,7 +89,9 @@ export default {
         this.createAsset(payload);
       } else {
         const asset = this.assets[assetIndex];
+
         console.log(this.assets);
+        console.log(asset);
 
         // TODO: _.mean
         const middlePrice = this.middlePrice(
@@ -98,18 +100,16 @@ export default {
           payload.count,
           asset.count
         );
+
         const updatedAsset = {
+          ...asset,
           name: payload.name,
           count: payload.count + asset.count,
           middlePrice,
-          currentPrice: 24,
           cost: (payload.count + asset.count) * 24,
-          profit: 1,
-          profitability: 45,
-          percent: 7,
           ticker: payload.ticker,
         };
-        this.updateAsset({ item: updatedAsset, index: assetIndex });
+        this.updateAsset(updatedAsset);
       }
     },
     middlePrice(val1, val2, count1, count2) {

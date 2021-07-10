@@ -30,11 +30,23 @@
       fixed-header
       hide-default-footer
       class="base-table__table elevation-1"
+      :class="{ 'base-table__table_editable': editable }"
       @page-count="pageCount = $event"
     >
       <template #item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-dots-horizontal</v-icon>
+          </template>
+          <v-list>
+            <v-list-item v-for="(action, index) in actions" :key="index" link>
+              <v-list-item-title @click="$emit(action.action, item)">
+                <v-icon small v-text="action.icon" class="mr-2" />
+                {{ action.text }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </template>
       <template v-if="!disabledPagination" #footer>
         <div class="text-center base-table__pagination">
@@ -70,6 +82,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    editable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     page: 1,
@@ -78,6 +94,10 @@ export default {
     selected: [],
     search: "",
     tableHeight: 0,
+    actions: [
+      { text: "Изменить", icon: "mdi-pencil", action: "edit" },
+      { text: "Удалить", icon: "mdi-delete", action: "remove" },
+    ],
   }),
   computed: {
     itemsPerPage() {
@@ -131,5 +151,32 @@ export default {
 }
 .base-table__pagination {
   padding: 10px 0;
+}
+.base-table_action-cell {
+  width: 0;
+  padding: 0 !important;
+  right: 0;
+  transform: translateZ(0);
+}
+.base-table__table_editable {
+  tbody {
+    tr:hover {
+      .text-start:last-child {
+        opacity: 1;
+      }
+    }
+    .text-start:last-child {
+      width: 40px;
+      max-width: 40px;
+      padding: 5px;
+      position: absolute;
+      right: 0;
+      transform: translateZ(0);
+      border: none !important;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+    }
+  }
 }
 </style>

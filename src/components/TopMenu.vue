@@ -54,6 +54,7 @@ export default {
     tabsMenu: [
       { name: "Главная", id: 0, path: "main" },
       { name: "Кошельки", id: 1, path: "briefcases" },
+      { name: "активы", id: 2, path: "table", view: ["table", "deals"] },
     ],
     actionsMenu: [
       {
@@ -69,9 +70,11 @@ export default {
       user: (state) => state.auth.currentUser,
     }),
     activeMenuId() {
-      const { path } = this.$route;
+      const { name } = this.$route;
 
-      const item = this.tabsMenu.find((item) => path.includes(item.path));
+      const item = this.tabsMenu.find(
+        (item) => name.includes(item.path) || item.view?.includes(name)
+      );
       return item?.id;
     },
   },
