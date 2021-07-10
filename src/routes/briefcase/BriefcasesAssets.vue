@@ -3,7 +3,7 @@
     <base-table
       class="briefcases__table"
       disabled-pagination
-      :row="tableRow || []"
+      :row="assets"
       :headers="tableHeaders"
       :loading="loading"
     />
@@ -13,6 +13,8 @@
 <script>
 import { mapState } from "vuex";
 import BaseTable from "@/components/BaseTable";
+import { db } from "@/main";
+import firebase from "firebase";
 
 export default {
   name: "BriefcasesAssets",
@@ -33,12 +35,20 @@ export default {
       { text: "Доходность, %", value: "profitability" },
       { text: "Доля, %", value: "percent" },
     ],
+    assets: [],
   }),
   computed: {
     ...mapState({
-      tableRow: (state) => state.assets.list,
       loading: (state) => state.assets.loading,
     }),
+  },
+  firestore() {
+    return {
+      assets:
+        db
+          .collection("assets")
+          .where("userId", "==", firebase.auth().currentUser.uid) || [],
+    };
   },
 };
 </script>
