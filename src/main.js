@@ -4,18 +4,19 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import { ValidationProvider } from "vee-validate";
-
-Vue.component("ValidationProvider", ValidationProvider);
-
+import { firestorePlugin } from "vuefire";
 import firebase from "firebase/app";
 import "firebase/auth";
-import "firebase/database";
+import "firebase/firestore";
 
+Vue.component("ValidationProvider", ValidationProvider);
+Vue.use(firestorePlugin);
 Vue.config.productionTip = false;
 
 firebase.initializeApp({
   apiKey: "AIzaSyDEjL0KpzlWmqW6acQrcUYRB4Q45221KV0",
   authDomain: "personalinvestapp.firebaseapp.com",
+  databaseURL: "https://personalinvestapp-default-rtdb.firebaseio.com",
   projectId: "personalinvestapp",
   storageBucket: "personalinvestapp.appspot.com",
   messagingSenderId: "452570424773",
@@ -35,3 +36,5 @@ firebase.auth().onAuthStateChanged(() => {
     }).$mount("#app");
   }
 });
+
+export const db = firebase.firestore();
