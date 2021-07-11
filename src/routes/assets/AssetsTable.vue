@@ -57,5 +57,6 @@ export default {
 .briefcases-assets {
   overflow-y: auto;
   width: 100%;
+  border-radius: 4px;
 }
 </style>

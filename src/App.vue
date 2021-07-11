@@ -1,12 +1,19 @@
 <template>
   <v-app class="app">
-    <router-view />
+    <router-view v-if="user.uid" />
   </v-app>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "App",
+  computed: {
+    ...mapState({
+      user: (state) => state.auth.currentUser,
+    }),
+  },
 };
 </script>
 <style lang="scss">

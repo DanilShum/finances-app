@@ -14,18 +14,10 @@
 
       <v-spacer />
 
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
       <v-menu left bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
-            <v-avatar color="secondary" size="32">DS</v-avatar>
+            <v-avatar color="secondary" size="32">{{ userAvatar }}</v-avatar>
           </v-btn>
         </template>
 
@@ -69,6 +61,10 @@ export default {
     ...mapState({
       user: (state) => state.auth.currentUser,
     }),
+    userAvatar() {
+      const name = this.user.name?.split(" ");
+      return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ""}`;
+    },
     activeMenuId() {
       const { name } = this.$route;
 

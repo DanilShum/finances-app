@@ -1,38 +1,42 @@
 <template>
   <div class="briefcases main_container">
-    <div class="briefcases__content">
-      <v-card class="briefcases__list">
-        <v-list two-line>
-          <v-list-item-group v-model="selected" active-class="teal--text">
-            <template v-for="(item, index) in briefcasesItems">
-              <v-list-item :key="item.title">
-                <template v-slot:default="{ active }">
-                  <briefcase :data="item" :active="active" />
-                </template>
-              </v-list-item>
-
-              <v-divider
-                v-if="index < briefcasesItems.length - 1"
-                :key="index"
-              />
-            </template>
-            <v-list-item
-              key="create-briefcase"
-              v-text="'Создать'"
-              @click="
-                createBriefcase({
-                  name: 'кошелек4',
-                  sum: 0,
-                  currency: 'RUB',
-                  assets: [],
-                  deals: [],
-                })
-              "
-            />
-          </v-list-item-group>
-        </v-list>
-      </v-card>
-    </div>
+    <v-item-group class="briefcases__content" mandatory>
+      <v-container>
+        <v-row>
+          <v-col
+            v-for="(item, index) in briefcasesItems"
+            :key="index"
+            cols="12"
+            md="4"
+          >
+            <v-item v-slot="{ active, toggle }">
+              <v-card
+                :color="active ? 'primary' : 'secondary'"
+                class="d-flex align-center"
+                dark
+                height="200"
+                @click="toggle"
+              >
+                <v-scroll-y-transition>
+                  <briefcase :data="item" />
+                </v-scroll-y-transition>
+              </v-card>
+            </v-item>
+          </v-col>
+          <v-col
+            key="create-briefcase"
+            v-text="'Создать'"
+            @click="
+              createBriefcase({
+                name: 'кошелек4',
+                sum: 0,
+                currency: 'RUB',
+              })
+            "
+          />
+        </v-row>
+      </v-container>
+    </v-item-group>
   </div>
 </template>
 
@@ -54,8 +58,31 @@ export default {
         profitability: 24,
         countPosition: 34,
       },
+      {
+        id: 2,
+        name: "Кошелечек 1",
+        currency: "RUB",
+        amount: 15000,
+        profitability: 24,
+        countPosition: 34,
+      },
+      {
+        id: 3,
+        name: "Кошелечек 1",
+        currency: "RUB",
+        amount: 15000,
+        profitability: 24,
+        countPosition: 34,
+      },
+      {
+        id: 4,
+        name: "Кошелечек 1",
+        currency: "RUB",
+        amount: 15000,
+        profitability: 24,
+        countPosition: 34,
+      },
     ],
-    items: ["Foo", "Bar", "Fizz", "Buzz"],
   }),
   computed: {
     ...mapState({

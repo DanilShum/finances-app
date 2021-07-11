@@ -1,9 +1,6 @@
 <template>
   <div class="assets">
-    <div class="assets__bar">
-      <v-btn to="/app/assets/table" />
-      <v-btn to="/app/assets/deals" />
-    </div>
+    <navigation-bar />
 
     <keep-alive>
       <router-view />
@@ -12,12 +9,11 @@
 </template>
 
 <script>
+import NavigationBar from "@/components/NavigationBar";
 export default {
   name: "Assets",
-  components: {},
+  components: { NavigationBar },
   props: {},
-  data: () => ({}),
-  computed: {},
   methods: {},
 };
 </script>
@@ -27,7 +23,7 @@ export default {
   display: flex;
   height: calc(100% - 60px);
 }
-.assets__bar {
-  padding-right: 10px;
+.navigation-bar {
+  margin-right: 10px;
 }
 </style>

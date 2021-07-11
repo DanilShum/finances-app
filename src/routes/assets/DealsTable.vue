@@ -82,6 +82,7 @@ export default {
 <style lang="scss">
 .briefcases-deals {
   width: 100%;
+  border-radius: 4px;
   .base-table {
     height: 100%;
   }

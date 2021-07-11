@@ -12,11 +12,6 @@
         single-line
         hide-details
       />
-      <slot v-if="showActions" name="header-actions">
-        <v-btn color="primary" dark class="ml-4" @click="$emit('add')">
-          Добавить актив
-        </v-btn>
-      </slot>
     </v-toolbar>
     <v-data-table
       :loading="loading"
@@ -29,7 +24,7 @@
       :search="search"
       fixed-header
       hide-default-footer
-      class="base-table__table elevation-1"
+      class="base-table__table"
       :class="{ 'base-table__table_editable': editable }"
       @page-count="pageCount = $event"
     >
@@ -54,6 +49,16 @@
         </div>
       </template>
     </v-data-table>
+    <v-btn
+      v-if="showActions"
+      fab
+      dark
+      color="primary"
+      class="base-table__create-button ml-4 mx-2"
+      @click="$emit('add')"
+    >
+      <v-icon dark> mdi-plus </v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -134,11 +139,10 @@ export default {
 .base-table {
   width: 100%;
   height: 100%;
-  border-left: 1px solid rgba(black, 0.12);
+  border-bottom: 1px solid rgba(black, 0.12);
 
   &:not(.base-table_width-pagination) .v-data-table__wrapper {
     height: 100%;
-    border-bottom: 1px solid rgba(black, 0.12);
   }
 }
 .base-table__table {
@@ -183,5 +187,10 @@ export default {
       opacity: 0;
     }
   }
+}
+.base-table__create-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
 }
 </style>
