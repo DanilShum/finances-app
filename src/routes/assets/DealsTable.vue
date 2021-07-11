@@ -7,12 +7,13 @@
       editable
       @add="showPopupDeals = true"
       @remove="removeItemDeal"
+      @clone="setDataTables({ deal: $event, assets })"
       :loading="loading"
     />
     <popup-deal
       v-if="showPopupDeals"
       @close="showPopupDeals = false"
-      @create="addDeal"
+      @create="setDataTables({ deal: $event, assets })"
     />
   </div>
 </template>
@@ -59,62 +60,9 @@ export default {
   },
   methods: {
     ...mapActions({
-      createDeal: "deals/create",
-      createAsset: "assets/create",
-      updateAsset: "assets/updateItem",
       removeItemDeal: "deals/removeItem",
+      setDataTables: "deals/setDataTables",
     }),
-    async addDeal(deal) {
-      this.createDeal(deal);
-      const assetIndex = this.assets.findIndex(
-        (asset) => asset.ticker === deal.ticker
-      );
-
-      console.log(assetIndex);
-
-      // TODO: move to store
-      const payload = {
-        name: deal.name,
-        count: Number(deal.count),
-        middlePrice: Number(deal.price),
-        currentPrice: 24,
-        cost: Number(deal.count) * 24,
-        profit: 1,
-        profitability: 16,
-        percent: 4,
-        ticker: deal.ticker,
-      };
-
-      if (assetIndex < 0) {
-        this.createAsset(payload);
-      } else {
-        const asset = this.assets[assetIndex];
-
-        console.log(this.assets);
-        console.log(asset);
-
-        // TODO: _.mean
-        const middlePrice = this.middlePrice(
-          payload.middlePrice,
-          asset.middlePrice,
-          payload.count,
-          asset.count
-        );
-
-        const updatedAsset = {
-          ...asset,
-          name: payload.name,
-          count: payload.count + asset.count,
-          middlePrice,
-          cost: (payload.count + asset.count) * 24,
-          ticker: payload.ticker,
-        };
-        this.updateAsset(updatedAsset);
-      }
-    },
-    middlePrice(val1, val2, count1, count2) {
-      return (val1 * count1 + val2 * count2) / (count1 + count2);
-    },
   },
   firestore() {
     return {

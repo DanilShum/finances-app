@@ -96,6 +96,11 @@ export default {
     tableHeight: 0,
     actions: [
       { text: "Изменить", icon: "mdi-pencil", action: "edit" },
+      {
+        text: "Повторить",
+        icon: "mdi-plus-circle-multiple-outline",
+        action: "clone",
+      },
       { text: "Удалить", icon: "mdi-delete", action: "remove" },
     ],
   }),
